@@ -1,7 +1,17 @@
 {
   "expo": {
-    "name": "gaurdy",
-    "slug": "gaurdy",
+    "name": "Gaurdy-Try",
+    "slug": "Gaurdy-Try",
+    "plugins": [
+      "@react-native-google-signin/google-signin",
+      "expo-image-picker",
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
+        }
+      ]
+    ],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -21,13 +31,26 @@
       "supportsTablet": true
     },
     "android": {
+      "googleServicesFile": "./google-services.json", 
+      "permissions": ["ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION"],
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyAWvybWn5vUMdmOBF_QgT9LsXsv3y23YI8"
+        }
+      },
+      "package": "com.anonymous.GaurdyTry"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "2a745e67-9014-4001-9041-ab3321795638"
+      }
     }
   }
 }

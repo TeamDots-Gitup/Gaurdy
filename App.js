@@ -1,183 +1,186 @@
-const Stack = createNativeStackNavigator();
-import * as React from "react";
+//App 
 import { NavigationContainer } from "@react-navigation/native";
-import { useFonts } from "expo-font";
-import GetStarted from "./screens/GetStarted";
-import ContactUs from "./screens/ContactUs";
-import AdminReportOffense from "./screens/AdminReportOffense";
-import AdminVedioComplaint from "./screens/AdminVedioComplaint";
-import AdminVoiceComplaint from "./screens/AdminVoiceComplaint";
-import AdminComplaint from "./screens/AdminComplaint";
-import AdminNotification from "./screens/AdminNotification";
-import AdminDashboard from "./screens/AdminDashboard";
-import AdminLogIn from "./screens/AdminLogIn";
-import LogIn from "./screens/LogIn";
-import UserDashboard from "./screens/UserDashboard";
-import PasswordReset from "./screens/PasswordReset";
-import SignUp from "./screens/SignUp";
-import SearchStation from "./screens/SearchStation";
-import UserVedioComplaint from "./screens/UserVedioComplaint";
-import EmergencySupport from "./screens/EmergencySupport";
-import UserVoiceComplaint from "./screens/UserVoiceComplaint";
-import HelpAndSupport from "./screens/HelpAndSupport";
-import UserAlertParent from "./screens/UserAlertParent";
-import UserReportOffence from "./screens/UserReportOffence";
-import UserComplaint from "./screens/UserComplaint";
-import UserNotification from "./screens/UserNotification";
-import TermsAndCondition from "./screens/TermsAndCondition";
+import { createStackNavigator } from "@react-navigation/stack";
+import React,{useState, useEffect} from "react";
+import {firebase} from './config';
 
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { View, Text, Pressable, TouchableOpacity } from "react-native";
 
-const App = () => {
-  const [hideSplashScreen, setHideSplashScreen] = React.useState(false);
-  const [fontsLoaded] = useFonts({
-    Poppins: require("./assets/fonts/Poppins.ttf"),
-    "Source Sans Pro": require("./assets/fonts/Source_Sans_Pro.ttf"),
-    "Pontano Sans": require("./assets/fonts/Pontano_Sans.ttf"),
-    Lato: require("./assets/fonts/Lato.ttf"),
-    Quicksand: require("./assets/fonts/Quicksand.ttf"),
-  });
+import Login from "./src/Login";
+import Registration from "./src/Registration";
+import Dashboard from "./src/Dashboard";
+import Header from "./components/Header";
+import WriteComplaint from "./src/WriteComplaint";
+import VideoComplaint from "./src/VideoComplaint";
+import NearestPoliceStation from "./src/NearestPoliceStation";
+import EmergancySupport from "./src/EmergancySupport";
+import VoiceComplaint from "./src/VoiceComplaint";
+import ReportOffense from "./src/ReportOffense";
+import AlertParents from "./src/AlertParents";
+import HelpAndSupport from "./src/HelpAndSupport";
+import ContactGaurdy from "./src/ContactGaurdy"
+import Notfication from "./src/Notfication";
+import Password from "./src/Password";
+import ForgotPassword from "./src/ForgotPassword";
+import Example from "./src/Example";
 
-  React.useEffect(() => {
-    setTimeout(() => {
-      setHideSplashScreen(true);
-    }, 3000);
-  }, []);
 
-  if (!fontsLoaded) {
-    return null;
+const Stack = createStackNavigator();
+
+function App(){
+  const [initializing, setInitializing] = useState(true);
+  const [user, setUser] = useState();
+  
+
+  //handle user state changes
+  function onAuthStateChanged(user){
+    setUser(user);
+    if (initializing) setInitializing(false);
   }
 
-  return (
-    <>
-      <NavigationContainer>
-        {hideSplashScreen ? (
-          <Stack.Navigator
-            initialRouteName="ContactUs"
-            screenOptions={{ headerShown: false }}
-          >
-            <Stack.Screen
-              name="GetStarted"
-              component={GetStarted}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="ContactUs"
-              component={ContactUs}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="AdminReportOffense"
-              component={AdminReportOffense}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="AdminVedioComplaint"
-              component={AdminVedioComplaint}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="AdminVoiceComplaint"
-              component={AdminVoiceComplaint}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="AdminComplaint"
-              component={AdminComplaint}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="AdminNotification"
-              component={AdminNotification}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="AdminDashboard"
-              component={AdminDashboard}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="AdminLogIn"
-              component={AdminLogIn}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="LogIn"
-              component={LogIn}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="UserDashboard"
-              component={UserDashboard}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="PasswordReset"
-              component={PasswordReset}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="SignUp"
-              component={SignUp}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="SearchStation"
-              component={SearchStation}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="UserVedioComplaint"
-              component={UserVedioComplaint}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="EmergencySupport"
-              component={EmergencySupport}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="UserVoiceComplaint"
-              component={UserVoiceComplaint}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="HelpAndSupport"
-              component={HelpAndSupport}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="UserAlertParent"
-              component={UserAlertParent}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="UserReportOffence"
-              component={UserReportOffence}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="UserComplaint"
-              component={UserComplaint}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="UserNotification"
-              component={UserNotification}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="TermsAndCondition"
-              component={TermsAndCondition}
-              options={{ headerShown: false }}
-            />
-          </Stack.Navigator>
-        ) : (
-          <TermsAndCondition />
-        )}
-      </NavigationContainer>
-    </>
+  useEffect(() => {
+    const subscriber = firebase.auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber;
+  }, []);
+  
+  if (initializing) return null;
+
+  if (!user){
+    return(
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Gaurdy"
+        component={Login}
+        options={{
+          headerTitle:() => <Header name=""/>,
+            headerStyle:{
+            height:0,
+            backgroundColor: '#071e3d',
+            }
+          }}
+      />
+      <Stack.Screen
+        name="Registration"
+        component={Registration}
+        options={{
+          headerTitle:() => <Header name="Gaurdy"/>,
+            headerStyle:{
+            height:0,
+            backgroundColor: '#071e3d',
+            }
+           }}
+      />
+    </Stack.Navigator>
   );
-};
-export default App;
+}
+
+  return (
+    
+    <Stack.Navigator
+    initialRouteName="Login">
+    
+
+    <Stack.Screen
+        name="Dashboard"
+        component={Dashboard}
+        options={{
+        headerTitle:() => <Header name="Dashboard"/>,
+        headerStyle:{
+        height:0,
+        backgroundColor: '#071e3d',
+        }
+      }}
+    />
+    <Stack.Screen
+        name="WriteComplaint"
+        component={WriteComplaint}
+        options={{
+        headerTitle:() => <Header name="WriteComplaint"/>,
+        headerStyle:{
+        height:0,
+        backgroundColor: '#071e3d',
+        }
+      }}
+    />
+
+    <Stack.Screen
+      name="ForgotPassword"
+      component={ForgotPassword}
+      options={{headerShown:false}}
+    />
+    
+    <Stack.Screen
+        name="VideoComplaint"
+        component={VideoComplaint}
+        options={{ headerShown: false}}
+    />
+     <Stack.Screen
+        name="NearestPoliceStation"
+        component={NearestPoliceStation}
+        options={{ headerShown: false}}
+    />
+
+    <Stack.Screen
+        name="EmergancySupport"
+        component={EmergancySupport}
+        options={{ headerShown: false}}
+    />
+    
+    <Stack.Screen
+        name="VoiceComplaint"
+        component={VoiceComplaint}
+        options={{ headerShown: false}}
+    />
+    <Stack.Screen
+        name="ReportOffense"
+        component={ReportOffense}
+        options={{ headerShown: false}}
+    />
+    <Stack.Screen
+        name="AlertParents"
+        component={AlertParents}
+        options={{ headerShown: false}}
+    />
+     <Stack.Screen
+        name="HelpAndSupport"
+        component={HelpAndSupport}
+        options={{ headerShown: false}}
+    />
+     <Stack.Screen
+        name="ContactGaurdy"
+        component={ContactGaurdy}
+        options={{ headerShown: false}}
+    />
+    <Stack.Screen
+        name="Notfication"
+        component={Notfication}
+        options={{ headerShown: false}}
+    />
+    <Stack.Screen
+        name="Password"
+        component={Password}
+        options={{ headerShown: false}}
+    />
+    <Stack.Screen
+        name="Example"
+        component={Example}
+        options={{ headerShown: false}}
+    />
+  </Stack.Navigator>
+    
+  
+
+  
+ 
+
+  
+  );
+}
+
+export default() => {
+  return(
+    <NavigationContainer>
+      <App/>
+    </NavigationContainer>
+    
+  )
+}

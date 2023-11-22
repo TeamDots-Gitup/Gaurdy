@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "91691742185",
+    "project_id": "gaurdy-eb9b7",
+    "storage_bucket": "gaurdy-eb9b7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:91691742185:android:3dd78d018b0f6f66561178",
+        "android_client_info": {
+          "package_name": "com.anonymous.GaurdyTry"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDv6LjQrEaDwDXDNmcXqEvIQde0gfJ9C34"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
