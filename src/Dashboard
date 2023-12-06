@@ -1,1 +1,301 @@
+//Dashboard
 
+import { View, Text, StyleSheet, TouchableOpacity,Image, ScrollView, FlatList, Linking } from 'react-native'
+import React, {useEffect, useState} from 'react'
+import {firebase} from '../config'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { useNavigation } from "@react-navigation/native"
+import { LinearGradient } from "expo-linear-gradient"
+import Slider from '../components/Slider'
+
+
+const Dashboard = () => {
+  const navigation = useNavigation();
+  const [name,setName] = useState('')
+
+ // emergancy support
+ const handleButtonClick = () => {
+  // emergacy support number
+  const phoneNumber = '119';
+
+  // Use the tel scheme to open the phone's dialer
+  const url = `tel:${phoneNumber}`;
+
+  // Open the phone's dialer with the pre-filled number
+  Linking.openURL(url);
+};
+
+const EmergancyMsgButtonClick = () => {
+  
+  const phoneNumber = '+94763451121';
+
+ 
+  const message = 'Emergancy';
+
+  // Use the sms scheme to open the messaging app with a pre-filled message
+  const url = `sms:${phoneNumber}?body=${encodeURIComponent(message)}`;
+
+  // Open the messaging app with the pre-filled message
+  Linking.openURL(url);
+};
+  // add slide to dashboard
+  
+  //change the password
+  const changePassword = () => {
+    firebase.auth().sendPasswordResetEmail(firebase.auth().currentUser.email)
+    .then(() => {
+      alert("Password reset email sent")
+    }).catch((error) => {
+      alert(error)
+    })
+    }
+  
+
+  useEffect(() => {
+    firebase.firestore().collection('users')
+    .doc(firebase.auth().currentUser.uid).get()
+    .then((snapshot) => {
+      if(snapshot.exists){
+        setName(snapshot.data())
+      }
+      else {
+        console.log('User does not exist')
+      }
+    })
+  }, [])
+
+  
+  return(
+    <View style={styles.containers}>
+      <ScrollView>
+     <SafeAreaView style = {styles.container}>
+       <View style={styles.scrollView}>
+        <Text style={{fontSize:20,color:'white', left:30, marginTop:30}}>
+            Hey !! Welcome back{name.firstName}
+        </Text>
+      <TouchableOpacity onPress={() => navigation.navigate("Notfication")}>
+          <Image  style={{left:350, width:30, height:30,marginTop:-20}}source={require("../assets/i11.png")}>
+          </Image>   
+      </TouchableOpacity>     
+      <View>
+        <Text style={{top:80, textAlign:'center',right:50, color:'yellow', fontSize:20}}>
+          Trending Today
+        </Text>
+      </View>
+
+      <SafeAreaView style={{top:10}}>
+      <Slider />
+      </SafeAreaView>
+    
+<View style={{top:-50, left:40}}>
+    <TouchableOpacity onPress={() => navigation.navigate("WriteComplaint")}>
+      <View style={{backgroundColor:'#3E4659',width:100, height:100,borderRadius:20, top:-20}}>
+                <Image  style={styles.I1}source={require("../assets/i1.png")}>
+                </Image>
+                <Text style={styles.C1}  >
+                  Write Complaint
+                </Text>
+      </View>
+    </TouchableOpacity>
+      
+    <TouchableOpacity onPress={() => navigation.navigate("NearestPoliceStation")}>
+      <View style={{backgroundColor:'#3E4659',width:100, height:100, borderRadius:20,top:-10}}>
+                <Image  style={styles.I1}source={require("../assets/i4.png")}>
+                </Image>        
+                <Text style={styles.C1}>
+                  Nearest Police Station
+                </Text>
+      </View>
+    </TouchableOpacity>
+       
+    <TouchableOpacity onPress={(EmergancyMsgButtonClick)}>
+      <View style={{backgroundColor:'#3E4659',width:100, height:100,borderRadius:20}}>
+                <Image  style={styles.I1}source={require("../assets/i5.png")}>
+                </Image>
+                <Text style={styles.C1}>
+                  Alert Parents
+                </Text>
+    </View>
+    </TouchableOpacity>
+       
+    <TouchableOpacity onPress={() => navigation.navigate("HelpAndSupport")}>
+    <View style={{backgroundColor:'#3E4659',width:100, height:100, left:125, top:-100, borderRadius:20}}>
+                <Image  style={styles.I1}source={require("../assets/i9.png")}>
+                </Image>
+                <Text style={styles.C1}>
+                  Help and Support
+                </Text>
+    </View>
+    </TouchableOpacity>
+
+    <TouchableOpacity onPress={(handleButtonClick)}>
+    <View style={{backgroundColor:'#3E4659',width:100, height:100, left:125, top:-310, borderRadius:20}}>
+                <Image  style={styles.I1}source={require("../assets/i8.png")}>
+                </Image>
+                <Text style={styles.C1}>
+                  Emergancy Support
+                </Text>
+    </View>
+    </TouchableOpacity>
+
+    <TouchableOpacity  onPress={() => navigation.navigate("VoiceComplaint")}>
+    <View style={{backgroundColor:'#3E4659',width:100, height:100, left:125, top:-520, borderRadius:20}}>
+                <Image  style={styles.I1}source={require("../assets/i2.png")}>
+                </Image>
+                <Text style={styles.C1}>
+                  Voice Complaint
+                </Text>
+    </View>
+    </TouchableOpacity>
+
+    <TouchableOpacity onPress={() => navigation.navigate("VideoComplaint")}>
+    <View style={{backgroundColor:'#3E4659',width:100, height:100, left:250, top:-620, borderRadius:20}}>
+                <Image  style={styles.I1}source={require("../assets/i3.png")}>
+                </Image>
+                <Text style={styles.C1}>
+                  Video Complaint
+                </Text>
+    </View>
+    </TouchableOpacity>
+    <TouchableOpacity onPress={() => navigation.navigate("ReportOffense")}>
+    <View style={{backgroundColor:'#3E4659',width:100, height:100, left:250, top:-610, borderRadius:20}}>
+                <Image  style={styles.I1}source={require("../assets/i6.png")}>
+                </Image>
+                <Text style={styles.C1}>
+                  Report Offense
+                </Text>
+    </View>
+    </TouchableOpacity>
+    <TouchableOpacity onPress={() => navigation.navigate("ContactGaurdy")}>
+    <View style={{backgroundColor:'#3E4659',width:100, height:100, left:250, top:-600, borderRadius:20}}>
+                <Image  style={styles.I1}source={require("../assets/i7.png")}>
+                </Image>
+                <Text style={styles.C1}>
+                  Contact Gaurdy
+                </Text>
+    </View>
+    </TouchableOpacity>
+    
+   
+    <View>
+    <View style={{backgroundColor:'#29465B',width:350, height:70, left:0, marginTop:-550, borderRadius:20}}>
+         <TouchableOpacity>
+            <Image  style={styles.gaurdy}source={require("../assets/home1.png")}>
+            </Image>
+          </TouchableOpacity>
+          <TouchableOpacity>
+             <Image  style={styles.gaurdy1}source={require("../assets/home2.png")}>
+             </Image>
+          </TouchableOpacity>
+
+    </View>
+    </View>
+    <View style={{top:-220, right:35}}>
+      <TouchableOpacity
+          onPress={() => firebase.auth().signOut()}
+          style={styles.button}
+      >
+          <Text style={{fontSize:13,fontWeight:'bold'}}>
+            Sign out
+          </Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+          onPress={() => {
+           changePassword()}}
+          style={styles.button2}
+      >
+          <Text style={{fontSize:13,fontWeight:'bold'}}>
+            Change Password
+          </Text>
+      </TouchableOpacity>
+    </View>  
+  </View>
+  </View>
+ </SafeAreaView>
+ </ScrollView>
+</View>
+  )
+}
+
+
+export default Dashboard
+
+
+const styles = StyleSheet.create({
+  containers:{
+    marginTop:0,
+    color:'#071e3d',
+  },
+  Box:{
+
+  },
+  C1:{
+    color:'white',
+    top:+50,
+    left:4,
+    textAlign:'center',
+    width:96,
+    fontWeight:'bold'
+  },
+  
+  I1:{
+    width:30,
+    height:30,
+    position:'absolute',
+    left:35,
+    top:10
+  },
+
+  I2:{
+    width:100,
+    height:100,
+    position:'absolute',
+    left:200,
+    top:10
+  },
+
+  container:{
+    backgroundColor:'#071e3d',
+    width:500,
+    height:1100,
+    top:0
+},
+  
+  button:{
+    marginTop:-300,
+    height:50,
+    width:"80%",
+    backgroundColor:'#DEC20B',
+    alignItems:'center',
+    justifyContent: 'center',
+    borderRadius:10,
+    top:70,
+    left:10,
+  },
+  button2:{
+    marginTop:100,
+    height:50,
+    width:"80%",
+    backgroundColor:'#DEC20B',
+    alignItems:'center',
+    justifyContent: 'center',
+    borderRadius:10,
+    top:-20,
+    left:10
+  },
+  gaurdy:{
+    width:50,
+    height:50,
+    left:50,
+    top:10
+  },
+  gaurdy1:{
+    width:50,
+    height:50,
+    left:250,
+    top:-40
+  },
+
+
+
+})
