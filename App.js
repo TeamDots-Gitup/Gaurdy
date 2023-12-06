@@ -4,7 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import React,{useState, useEffect} from "react";
 import {firebase} from './config';
 
-
+// login page navigators
 import Login from "./src/Login";
 import Registration from "./src/Registration";
 import Dashboard from "./src/Dashboard";
@@ -12,84 +12,74 @@ import Header from "./components/Header";
 import WriteComplaint from "./src/WriteComplaint";
 import VideoComplaint from "./src/VideoComplaint";
 import NearestPoliceStation from "./src/NearestPoliceStation";
-import EmergancySupport from "./src/EmergancySupport";
 import VoiceComplaint from "./src/VoiceComplaint";
 import ReportOffense from "./src/ReportOffense";
-import AlertParents from "./src/AlertParents";
 import HelpAndSupport from "./src/HelpAndSupport";
-import ContactGaurdy from "./src/ContactGaurdy"
 import Notfication from "./src/Notfication";
-import Password from "./src/Password";
-import ForgotPassword from "./src/ForgotPassword";
 import Example from "./src/Example";
+
+// admin login page navigators
+import AdminLogin from "./Admin/AdminLogin";
+import AdminRegister from "./Admin/AdminRegister";
+import AdminDashboard from "./Admin/AdminDashboard";
+import SendNotfication from "./AdminSrc/SendNotfication";
+import GetAudio from "./AdminSrc/GetAudio";
+import GetOffense from "./AdminSrc/GetOffense";
+import GetText from "./AdminSrc/GetText";
+import GetVideo from "./AdminSrc/GetVideo";
+
 
 
 const Stack = createStackNavigator();
 
-function App(){
+function App() {
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState();
-  
 
-  //handle user state changes
-  function onAuthStateChanged(user){
+  function onAuthStateChanged(user) {
     setUser(user);
     if (initializing) setInitializing(false);
   }
 
   useEffect(() => {
     const subscriber = firebase.auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber;
+    return () => subscriber(); // Unsubscribe on component unmount
   }, []);
-  
-  if (initializing) return null;
 
-  if (!user){
-    return(
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Gaurdy"
-        component={Login}
-        options={{
-          headerTitle:() => <Header name=""/>,
-            headerStyle:{
-            height:0,
-            backgroundColor: '#071e3d',
-            }
-          }}
-      />
-      <Stack.Screen
-        name="Registration"
-        component={Registration}
-        options={{
-          headerTitle:() => <Header name="Gaurdy"/>,
-            headerStyle:{
-            height:0,
-            backgroundColor: '#071e3d',
-            }
-           }}
-      />
-    </Stack.Navigator>
-  );
-}
+  if (initializing) return null;
 
   return (
     
-    <Stack.Navigator
-    initialRouteName="Login">
-    
+    <Stack.Navigator>
+      {user ? (
+        // If user is logged in  navigate to the user dashboard
+        <Stack.Screen
+          name="Dashboard"
+          component={Dashboard}
+          options={{
+            headerTitle: () => <Header name="Dashboard" />,
+            headerStyle: {
+              height: 0,
+              backgroundColor: '#071e3d',
+            },
+          }}
+        />
+      ) : (
+        // If user is not logged in or is an admin, navigate to the login/admin login
+        <Stack.Screen
+          name="Login"
+          component={Login}
+          options={{
+            headerTitle: () => <Header name="Gaurdy" />,
+            headerStyle: {
+              height: 0,
+              backgroundColor: '#071e3d',
+            },
+          }}
+        />
+      )}
 
-    <Stack.Screen
-        name="Dashboard"
-        component={Dashboard}
-        options={{
-        headerTitle:() => <Header name="Dashboard"/>,
-        headerStyle:{
-        height:0,
-        backgroundColor: '#071e3d',
-        }
-      }}
-    />
+      
     <Stack.Screen
         name="WriteComplaint"
         component={WriteComplaint}
@@ -101,12 +91,17 @@ function App(){
         }
       }}
     />
-
     <Stack.Screen
-      name="ForgotPassword"
-      component={ForgotPassword}
-      options={{headerShown:false}}
-    />
+        name="Registration"
+        component={Registration}
+        options={{
+          headerTitle: () => <Header name="Gaurdy" />,
+          headerStyle: {
+            height: 0,
+            backgroundColor: '#071e3d',
+          },
+        }}
+      />
     
     <Stack.Screen
         name="VideoComplaint"
@@ -120,12 +115,6 @@ function App(){
     />
 
     <Stack.Screen
-        name="EmergancySupport"
-        component={EmergancySupport}
-        options={{ headerShown: false}}
-    />
-    
-    <Stack.Screen
         name="VoiceComplaint"
         component={VoiceComplaint}
         options={{ headerShown: false}}
@@ -135,19 +124,9 @@ function App(){
         component={ReportOffense}
         options={{ headerShown: false}}
     />
-    <Stack.Screen
-        name="AlertParents"
-        component={AlertParents}
-        options={{ headerShown: false}}
-    />
      <Stack.Screen
         name="HelpAndSupport"
         component={HelpAndSupport}
-        options={{ headerShown: false}}
-    />
-     <Stack.Screen
-        name="ContactGaurdy"
-        component={ContactGaurdy}
         options={{ headerShown: false}}
     />
     <Stack.Screen
@@ -156,26 +135,92 @@ function App(){
         options={{ headerShown: false}}
     />
     <Stack.Screen
-        name="Password"
-        component={Password}
-        options={{ headerShown: false}}
-    />
-    <Stack.Screen
         name="Example"
         component={Example}
         options={{ headerShown: false}}
     />
-  </Stack.Navigator>
-    
-  
+   
+      
 
-  
+      {/* Admin Login Pages are following*/ }
+
+
+      <Stack.Screen
+        name="AdminLogin"
+        component={AdminLogin}
+        options={{
+          headerTitle: () => <Header name="Admin Login" />,
+          headerStyle: {
+            height: 0,
+            backgroundColor: '#071e3d',
+          },
+        }}
+      />
+
+    <Stack.Screen
+        name="SendNotfication"
+        component={SendNotfication}
+        options={{ headerShown: false}}
+    />
+     <Stack.Screen
+        name="GetAudio"
+        component={GetAudio}
+        options={{ headerShown: false}}
+    />
+     <Stack.Screen
+        name="GetVideo"
+        component={GetVideo}
+        options={{
+          headerTitle:() => <Header name="GetVideo"/>,
+          headerStyle:{
+          height:0,
+          backgroundColor: '#071e3d',
+          }
+        }}
+    />
+     <Stack.Screen
+        name="GetText"
+        component={GetText}
+        options={{
+          headerTitle:() => <Header name="GetText"/>,
+          headerStyle:{
+          height:0,
+          backgroundColor: '#343512',
+          }
+        }}
+    />
+     <Stack.Screen
+        name="GetOffense"
+        component={GetOffense}
+        options={{ headerShown: false}}
+    />
+      <Stack.Screen
+        name="AdminDashboard"
+        component={AdminDashboard}
+        options={{
+          headerTitle: () => <Header name="Admin Dashboard" />,
+          headerStyle: {
+            height: 0,
+            backgroundColor: '#071e3d',
+          },
+        }}
+      />
+       <Stack.Screen
+        name="AdminRegister"
+        component={AdminRegister}
+        options={{
+          headerTitle: () => <Header name="Admin Login" />,
+          headerStyle: {
+            height: 0,
+            backgroundColor: '#071e3d',
+          },
+        }}
+      />
+    </Stack.Navigator>
  
-
+    );
+  }
   
-  );
-}
-
 export default() => {
   return(
     <NavigationContainer>
@@ -183,4 +228,4 @@ export default() => {
     </NavigationContainer>
     
   )
-}
+  }
